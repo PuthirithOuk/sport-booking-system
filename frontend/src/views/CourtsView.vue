@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { RouterLink } from 'vue-router'
-import type { Court, Sport } from '../types'
+import { useCatalogStore } from '../stores/catalog'
 
-const props = defineProps<{
-  courts: Court[]
-  sports: Sport[]
-}>()
+const store = useCatalogStore()
+// storeToRefs keeps reactivity when destructuring
+const { sports, courts, loading, error } = storeToRefs(store)
 
 const selectedSportId = ref<number | null>(null)
 
 const visibleCourts = computed(() => {
-  const activeCourts = props.courts.filter(c => c.isActive)
+  const activeCourts = courts.value.filter(c => c.isActive)
   if (!selectedSportId.value) return activeCourts
   return activeCourts.filter(c => c.sportId === selectedSportId.value)
+})
+
+onMounted(() => {
+  store.fetchAll()
 })
 </script>
 
@@ -21,27 +25,40 @@ const visibleCourts = computed(() => {
   <div>
     <h1>Book a Court</h1>
 
-    <div class="tabs">
-      <button @click="selectedSportId = null" :class="{ active: !selectedSportId }">All</button>
-      <button 
-        v-for="sport in sports" 
-        :key="sport.id" 
-        @click="selectedSportId = sport.id"
-        :class="{ active: selectedSportId === sport.id }"
-      >
-        {{ sport.name }}
-      </button>
+    <!-- Loading State -->
+    <p v-if="loading">Loading courts...</p>
+
+    <!-- Error State -->
+    <div v-else-if="error">
+      <p style="color: red">{{ error }}</p>
+      <button @click="store.fetchAll()">Try again</button>
     </div>
 
-    <div class="court-list">
-      <div v-for="court in visibleCourts" :key="court.id" class="court-card">
-        <h3>{{ court.name }}</h3>
-        <p>${{ court.pricePerSlot }} / hour</p>
-        <RouterLink :to="`/courts/${court.id}`">View Slots</RouterLink>
+    <!-- Success State -->
+    <div v-else>
+      <div class="tabs">
+        <button @click="selectedSportId = null" :class="{ active: !selectedSportId }">All</button>
+        <button 
+          v-for="sport in sports" 
+          :key="sport.id" 
+          @click="selectedSportId = sport.id"
+          :class="{ active: selectedSportId === sport.id }"
+        >
+          {{ sport.name }}
+        </button>
       </div>
-    </div>
 
-    <p v-if="visibleCourts.length === 0">No courts found for this sport.</p>
+      <div class="court-list">
+        <div v-for="court in visibleCourts" :key="court.id" class="court-card">
+          <h3>{{ court.name }}</h3>
+          <p>${{ court.pricePerSlot }} / hour</p>
+          <RouterLink :to="`/courts/${court.id}`">View Slots</RouterLink>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <p v-if="visibleCourts.length === 0">No courts found for this sport.</p>
+    </div>
   </div>
 </template>
 

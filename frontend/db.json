@@ -1,0 +1,27 @@
+{
+  "sports": [
+    { "id": 1, "name": "Badminton", "description": "Indoor courts with wooden floor" },
+    { "id": 2, "name": "Tennis", "description": "Outdoor hard courts" },
+    { "id": 3, "name": "Basketball", "description": "Full-size indoor court" },
+    { "id": 4, "name": "Football", "description": "Seven-a-side artificial turf" }
+  ],
+  "courts": [
+    { "id": 1, "sportId": 1, "name": "Badminton Court A", "pricePerSlot": 10, "isActive": true },
+    { "id": 2, "sportId": 1, "name": "Badminton Court B", "pricePerSlot": 10, "isActive": true },
+    { "id": 3, "sportId": 1, "name": "Badminton Court C", "pricePerSlot": 12, "isActive": true },
+    { "id": 4, "sportId": 2, "name": "Tennis Court A", "pricePerSlot": 15, "isActive": true },
+    { "id": 5, "sportId": 2, "name": "Tennis Court B", "pricePerSlot": 15, "isActive": true },
+    { "id": 6, "sportId": 3, "name": "Basketball Court A", "pricePerSlot": 12, "isActive": true },
+    { "id": 7, "sportId": 4, "name": "Football Field A", "pricePerSlot": 25, "isActive": true },
+    { "id": 8, "sportId": 4, "name": "Football Field B", "pricePerSlot": 25, "isActive": false }
+  ],
+  "slots": [
+    { "id": 1110510, "courtId": 1, "startAt": "2026-11-05T03:00:00Z", "endAt": "2026-11-05T04:00:00Z", "status": "AVAILABLE" },
+    { "id": 1110511, "courtId": 1, "startAt": "2026-11-05T04:00:00Z", "endAt": "2026-11-05T05:00:00Z", "status": "AVAILABLE" },
+    { "id": 1110512, "courtId": 1, "startAt": "2026-11-05T05:00:00Z", "endAt": "2026-11-05T06:00:00Z", "status": "AVAILABLE" },
+    { "id": 4110518, "courtId": 4, "startAt": "2026-11-05T11:00:00Z", "endAt": "2026-11-05T12:00:00Z", "status": "BOOKED" }
+  ],
+  "bookings": [
+    { "id": 1, "userId": 1, "courtSlotId": 4110518, "status": "CONFIRMED", "createAt": "2026-11-04T10:00:00Z" }
+  ]
+}

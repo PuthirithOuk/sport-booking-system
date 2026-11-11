@@ -1,4 +1,4 @@
-# <Project name> 
+# sport-booking-system
 One sentence on what it does and for whom. Live URL (if deployed). 
  
 ## Screenshots 
